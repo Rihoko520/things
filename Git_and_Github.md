@@ -75,7 +75,7 @@ touch .gitignore
 ```
 git branch (-b) code
 ```
-新分支文件是master复制过来的，因此删除分支文件不影响主支文件
+新分支文件是main复制过来的，因此删除分支文件不影响主支文件
 指令不会让我们自动跳转到新的分支(加了 -b 可以直接跳转)
 - 用**git branch**查看新的分支
 （按q来退出）
@@ -95,7 +95,7 @@ git branch -m 旧分支名称  新分支名称
 ```
 **删除远程分支**
 ```
-git push origin -d 旧分支名称
+git push origin -D 旧分支名称
 ```
 ***上传新修改名称的本地分支***
 ```
@@ -132,6 +132,16 @@ git restore --staged file
 ```
 git remote add url
 ```
+## 在云端仓库创建新分支
+- 操作通常用于刚刚创建的仓库，用来创建仓库的第一个分支
+```
+git push url main
+```
+---
+```
+git push -u url main
+```
+该操作可以直接在云端创建新的分支并且直接和本地库的main分支同步
 ## 拷贝远程仓库到本地
 ```
 git clone + URL
