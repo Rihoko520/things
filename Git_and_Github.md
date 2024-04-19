@@ -159,9 +159,9 @@ https://github.com/Rihoko520/rihoko.git
 **用origin(在看联系时url左侧的一串字符）代替url只能用在你先前与本地库有联系的仓库**
 - push到远程仓库需要用到个人访问**token**，这个在github上获取
 - name:
-rihoko
+random
 - passwd
-（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）
+（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）
 - 从远程仓库获取文件拉到本地版本库
 ```
 git fetch + url
