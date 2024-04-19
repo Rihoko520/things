@@ -165,7 +165,7 @@ git remote -v
 ```
 git push url
 ```
-https://github.com/Rihoko520/rihoko.git
+https://github.com/Rihoko520/things.git
 **用origin(在看联系时url左侧的一串字符）代替url只能用在你先前与本地库有联系的仓库**
 - push到远程仓库需要用到个人访问**token**，这个在github上获取
 - name:
