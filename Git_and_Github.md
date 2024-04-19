@@ -135,10 +135,6 @@ git remote add url
 ## 在云端仓库创建新分支
 - 操作通常用于刚刚创建的仓库，用来创建仓库的第一个分支
 ```
-git push url main
-```
----
-```
 git push -u url main
 ```
 该操作可以直接在云端创建新的分支并且直接和本地库的main分支同步
