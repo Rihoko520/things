@@ -67,7 +67,8 @@ git commit -m "you idiot"
 ```
 “”里面的是要往文件里新增加的内容
 ## 查看前面的版本
-```
+```bash
+
 git log
 ```
 (HEAD -> master)表示目前我所处的版本
