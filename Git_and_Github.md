@@ -3,32 +3,42 @@
 - 在终端创建一个仓库
 打开终端（随便一个都行，例如vim）在终端中定位到自己的仓库所在文件夹 **cd /file**
 - 工作区暂存区本地版本区都在这里进行操作
+  
 ## 进行用户设置
+
 - 使用**git config --global user.name**设置用户名
-```
+  
+```bash
 git config --global user.name “Rihoko”
 ```
+
 - 使用**git config --global user.email**设置邮箱
-```
+```bash
 git config --global user.email a1219814581@163.com
 ```
+
 ## 版本控制
 - 进仓库行初始化
-```
+```bash
 git init
 ```
+
 - 设置主支路
-```
+```bash
 git config --global init.defaultBranch <名称>
 ```
+
 - 初始化后默认处于主分支里面
 此时你的git文件夹里面会新增加一个文件夹为.git
 git所有的记录都在这里面
+
 ## 在工作区创建文件
 ```
 echo "retard" > sb.md
 ```
+
 在工作区创建一个md文件名为sb，内容为retard
+
 ## 查看自己所处分支
 **git status**
 - 发现新创建的文件在**untracked files**的列表里，说明是未追踪文件
@@ -125,7 +135,7 @@ git rm file
 git commit -m"change"
 ```
 - 放弃删除的改动
-```
+```bash
 git restore --staged file
 ```
 ## 云端仓库关联
