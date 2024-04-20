@@ -91,7 +91,8 @@ git branch (-b) code
 - 用**git branch**查看新的分支
 （按q来退出）
 - 用**git checkout +分支名**来转到该分支上
-```
+```bash
+
 git checkout code
 ```
 ## 分支重命名操作
