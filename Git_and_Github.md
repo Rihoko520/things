@@ -167,7 +167,6 @@ https://github.com/Rihoko520/things.git
 - name:
 random
 - passwd
-（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）
 - 从远程仓库获取文件拉到本地版本库
 ```
 git fetch + url
