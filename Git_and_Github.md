@@ -44,13 +44,13 @@ echo "retard" > sb.md
 - 发现新创建的文件在**untracked files**的列表里，说明是未追踪文件
 ## 将工作区文件添加到缓存区
 - 使用 **git add**来实现添加
-```
+```bash
 git add retard.md
 ```
 ## 进行缓存区文件的提交操作
 - 用**status**查看可以发现文件已经处于**to be committed**的状态
 - 用**git commit**进行提交
-```
+```bash
 git commit
 ```
 ---
@@ -58,7 +58,7 @@ git commit
 ---
 - 当再次输入**git status**之后我们可以发现工作区已经没有东西了，即表示所有文件已被提交到本地版本库
 ##### tips:add 和 commit 一起写(-am)可以一次就把文件放到本地版本库.
-```
+```bash
 git status
 ```
 - 在提交同时将缓存区文件进行简短信息编辑的方式
