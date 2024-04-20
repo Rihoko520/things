@@ -33,7 +33,7 @@ git config --global init.defaultBranch <名称>
 git所有的记录都在这里面
 
 ## 在工作区创建文件
-```
+```bash
 echo "retard" > sb.md
 ```
 
