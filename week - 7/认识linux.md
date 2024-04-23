@@ -123,8 +123,8 @@ cd /home/shiyanlou/Code
 
 ```
 
-![alt text](image-1.png)
-💡 提示：如果忘记了目录名、文件名或命令，可使用 Tab 键自动补全，还可避免输入错误；连续按两次 Tab 可以显示全部候选结果。
+![alt text](photo/image-1.png)
+?? 提示：如果忘记了目录名、文件名或命令，可使用 Tab 键自动补全，还可避免输入错误；连续按两次 Tab 可以显示全部候选结果。
 
 ## 新建目录
 
@@ -132,13 +132,13 @@ cd /home/shiyanlou/Code
 
 - 先输入**cd ~** 返回用户主目录，然后练习一下：
 
-![alt text](image-2.png)
+![alt text](photo/image-2.png)
 
 *********
 
 还可以在 **mkdir** 后加入 **-p** 参数，一次性创建多级目录，如：
 
-![alt text](image-3.png)
+![alt text](photo/image-3.png)
 
 ## 文件操作
 
@@ -278,8 +278,8 @@ cat passwd
 
 - 有些命令可以使用 --help 选项查看帮助文档。
 
-![alt text](image-4.png)
+![alt text](photo/image-4.png)
 
 # 总结
 
-![alt text](image-5.png)
+![alt text](photo/image-5.png)
