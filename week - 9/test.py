@@ -96,6 +96,14 @@ for contour in contours:
 # 显示带有检测到的矩形的图像
 cv2.imshow('检测到的矩形', image)
 
+
+
+
+
+
+
+
+
 # 读取图像
 image = cv2.imread('photo/1.jpg')
 
