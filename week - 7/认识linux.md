@@ -90,7 +90,7 @@ cd /
 ## tree
 
 使用 tree 命令，可以列出一个文件夹下的所有子文件夹和文件（以树形结构来进行列出）。
-![alt text](image.png)
+![alt text](photo/image.png)
 还记得怎么进入根目录吗？我们来点刺激的，输入：
 
 ```bash
