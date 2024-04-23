@@ -15,7 +15,7 @@ contours, _ = cv2.findContours(edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE
 
 # 定义轮廓的最小和最大面积阈值
 min_area =7500
-max_area = 8000
+max_area = 8000000000000
 # 遍历轮廓
 for contour in contours:
     # 计算轮廓的面积
@@ -57,34 +57,41 @@ dilated_edges = cv2.dilate(edges, kernel, iterations=1)
 # 在膨胀后的边缘图像中查找轮廓
 contours, _ = cv2.findContours(dilated_edges, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
+# 定义轮廓的最小和最大面积阈值
+min_area =7500
 # 遍历轮廓
 for contour in contours:
+    # 计算轮廓的面积
+    area = cv2.contourArea(contour)
+
+    # 如果轮廓的面积在指定范围内
+    if min_area < area:
     # 将轮廓逼近为多边形
-    epsilon = 0.04 * cv2.arcLength(contour, True)
-    approx = cv2.approxPolyDP(contour, epsilon, True)
+        epsilon = 0.04 * cv2.arcLength(contour, True)
+        approx = cv2.approxPolyDP(contour, epsilon, True)
 
     # 如果轮廓有4个角点，则可能是矩形
-    if len(approx) == 4:
+        if len(approx) == 4:
         # 在图像上绘制矩形
-        cv2.drawContours(image, [approx], 0, (0, 255, 0), 2)
+            cv2.drawContours(image, [approx], 0, (0, 255, 0), 2)
 
-        # 获取矩形的坐标
-        x, y, w, h = cv2.boundingRect(approx)
-        x2, y2 = x + w, y + h
+            # 获取矩形的坐标
+            x, y, w, h = cv2.boundingRect(approx)
+            x2, y2 = x + w, y + h
         
-        # 计算矩形的中点坐标
-        center_x = (x + x2) // 2
-        center_y = (y + y2) // 2
+            # 计算矩形的中点坐标
+            center_x = (x + x2) // 2
+            center_y = (y + y2) // 2
 
-        # 打印矩形的中点坐标
-        print("矩形中点坐标:", center_x, center_y)
+            # 打印矩形的中点坐标
+            print("矩形中点坐标:", center_x, center_y)
 
-        # 在图像上绘制中点
-        cv2.circle(image, (center_x, center_y), 5, (255, 0, 0), -1)
+            # 在图像上绘制中点
+            cv2.circle(image, (center_x, center_y), 5, (255, 0, 0), -1)
 
-        # 打印矩形的坐标
-        print("矩形左上角坐标:", x, y)
-        print("矩形右下角坐标:", x2, y2)
+            # 打印矩形的坐标
+            print("矩形左上角坐标:", x, y)
+            print("矩形右下角坐标:", x2, y2)
 
 # 显示带有检测到的矩形的图像
 cv2.imshow('检测到的矩形', image)
