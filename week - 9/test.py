@@ -2,7 +2,7 @@ import cv2
 import numpy as np
 
 # 读取图像
-image = cv2.imread('photo/1.jpg')
+image = cv2.imread('photo/2.jpg')
 
 # 将图像转换为灰度
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -105,7 +105,7 @@ cv2.imshow('检测到的矩形', image)
 
 
 # 读取图像
-image = cv2.imread('photo/1.jpg')
+image = cv2.imread('photo/2.jpg')
 
 # 将图像转换为HSV颜色空间
 hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
