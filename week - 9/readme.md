@@ -13,34 +13,48 @@
 - test one
   - origin![图](src/1.jpg) 
   - after
-     - red-green![图](out/1/color.jpg)
-     - square![图](out/1/square.jpg)
+     - red-green
+      ![图](out/1/color.jpg)
+     - square
+     ![图](out/1/square.jpg)
 
 
 - test two
-  - origin![图](src/2.jpg) 
+  - origin
+  ![图](src/2.jpg) 
   - after
-     - red-green![图](out/2/color.jpg)
-     - square![图](out/2/square.jpg)
+     - red-green
+    ![图](out/2/color.jpg)
+     - square
+    ![图](out/2/square.jpg)
 
 
 - test three
-  - origin![图](src/3.jpg) 
+  - origin
+  ![图](src/3.jpg) 
   - after
-     - red-green![图](out/3/color.jpg)
-     - square![图](out/3/square.jpg)
+     - red-green
+     ![图](out/3/color.jpg)
+     - square
+     ![图](out/3/square.jpg)
 
 - test four
-  - origin![图](src/4.jpg) 
+  - origin
+  ![图](src/4.jpg) 
   - after
-     - red-green![图](out/4/color.jpg)
-     - square![图](out/4/square.jpg)
+     - red-green
+     ![图](out/4/color.jpg)
+     - square
+     ![图](out/4/square.jpg)
 
 - test five
-  - origin![图](src/5.jpg) 
+  - origin
+  ![图](src/5.jpg) 
   - after
-     - red-green![图](out/5/color.jpg)
-     - square![图](out/5/square.jpg)
+     - red-green
+     ![图](out/5/color.jpg)
+     - square
+     ![图](out/5/square.jpg)
 
 ### note
 - [用python代码移动文件](note.py)
