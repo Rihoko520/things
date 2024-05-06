@@ -1,7 +1,10 @@
 import cv2
 import numpy as np
+import shutil
+import os
 
-image_path = 'photo/1.jpg'
+#获取图片位置
+image_path = '1.jpg'
 
 image = cv2.imread(image_path)
 # 消噪
@@ -55,12 +58,30 @@ cv2.imshow("Marked Image", marked_image)
 
 ##########################################################################################
                                                                            #This
-#保存测试图片到相应区域                                                     #Is
+#保存测试图片到当前目录                                                        #Is
 #（文件夹/文件名）                                                          #A
-save_path = 'finish/1/square.jpg'                                          #Saving
+save_path = 'square.jpg'                                          #Saving
 cv2.imwrite(save_path, marked_image)                                       #Spot!
                                                                            #
 ##########################################################################################
+
+# 获取当前工作目录
+current_dir = os.getcwd()
+
+# 指定要移动的文件名
+file_to_move = 'square.jpg'
+
+# 指定目标目录
+destination_dir = 'D:\\Kaoru\\files\\Study\\python\\git\\week - 9\\out\\1'
+# 此处路径只能用绝对路径，可以通过查看报错内容来查找你要的绝对路径位置，也可以直接复制目标目录的绝对路径过来，注意一定要双杠“\\”
+
+# 构建文件的完整路径
+source_path = os.path.join(current_dir, file_to_move)
+destination_path = os.path.join(destination_dir, file_to_move)
+
+# 使用shutil.move()函数移动文件
+shutil.move(source_path, destination_path)
+
 
 # 将图像转换为HSV颜色空间
 hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
@@ -89,8 +110,10 @@ for contour in contours_red:
     #z为x向右移z个单位（即是轮廓的宽）
     #k为y向下移k个单位（即是轮廓的高）
     x, y, z, k = cv2.boundingRect(contour)
+    # 在图像上绘制红色边界框
+    cv2.rectangle(image, (x, y), (x+z, y+k), (0, 0, 255), 2)
     # 在图像上标出绿色区域的中心坐标
-    cv2.putText(image, f'Red: ({x + z // 2}, {y + k // 2})', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    cv2.putText(image, f'Red: ({x + z // 2}, {y + k // 2})', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
     print("红色点坐标:", x + z // 2, y + k // 2)
 # 遍历绿色点的轮廓
 for contour in contours_green:
@@ -99,6 +122,8 @@ for contour in contours_green:
     #z为x向右移z个单位（即是轮廓的宽）
     #k为y向下移k个单位（即是轮廓的高）
     x, y, z, k = cv2.boundingRect(contour)
+    # 在图像上绘制绿色边界框
+    cv2.rectangle(image, (x, y), (x+z, y+k), (0, 255, 0), 2)
     # 在图像上标出绿色区域的中心坐标
     cv2.putText(image, f'Green: ({x + z // 2}, {y + k // 2})', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
     print("绿色点坐标:", x + z // 2, y + k // 2)
@@ -109,11 +134,30 @@ cv2.imshow('红绿色点', image)
 
 ##########################################################################################
                                                                            #This
-#保存测试图片到相应区域                                                     #Is
+#保存测试图片到当前目录                                                    #Is
 #（文件夹/文件名）                                                          #A
-save_path = 'finish/1/color.jpg'                                          #Saving
+save_path = 'color.jpg'                                          #Saving
 cv2.imwrite(save_path, image)                                             #Spot!
                                                                            #
 ##########################################################################################
+
+
+# 获取当前工作目录
+current_dir = os.getcwd()
+
+# 指定要移动的文件名
+file_to_move = 'color.jpg'
+
+# 指定目标目录
+destination_dir = 'D:\\Kaoru\\files\\Study\\python\\git\\week - 9\\out\\1'
+# 此处路径只能用绝对路径，可以通过查看报错内容来查找你要的绝对路径位置，也可以直接复制目标目录的绝对路径过来，注意一定要双杠“\\”
+
+# 构建文件的完整路径
+source_path = os.path.join(current_dir, file_to_move)
+destination_path = os.path.join(destination_dir, file_to_move)
+
+# 使用shutil.move()函数移动文件
+shutil.move(source_path, destination_path)
+
 cv2.waitKey(0)
 cv2.destroyAllWindows()

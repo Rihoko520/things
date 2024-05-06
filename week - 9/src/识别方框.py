@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
 
-image_path = 'photo/1.jpg'
+#获取图片位置
+image_path = '1.jpg'
 
 image = cv2.imread(image_path)
 # 消噪
@@ -50,16 +51,9 @@ for quad in quadrilaterals:
     cy = int(M['m01'] / M['m00'])
 cv2.circle(marked_image, (cx, cy), 5, (0, 255, 0), -1)
 cv2.putText(marked_image, f"({cx}, {cy})", (cx, cy), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+print("中心点坐标:", cx, cy)
 cv2.namedWindow("Marked Image", cv2.WINDOW_NORMAL)
 cv2.imshow("Marked Image", marked_image)
 
-##########################################################################################
-                                                                           #This
-#保存测试图片到相应区域                                                     #Is
-#（文件夹/文件名）                                                          #A
-save_path = 'finish/1/square.jpg'                                          #Saving
-cv2.imwrite(save_path, marked_image)                                       #Spot!
-                                                                           #
-##########################################################################################
 cv2.waitKey(0)
 cv2.destroyAllWindows()

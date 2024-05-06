@@ -2,11 +2,10 @@
 
 - [识别方框的运行代码](src/识别方框.py)
 
-- [识别红绿点的代码](src/识别红绿点.py)
+- [识别红绿点的代码](src/识别红绿色点.py)
 
 - [运行总代码](src/总代码.py)
 
-- [测试总代码](src/代码(ipy版本).ipynb)
 
 
 ### 数据处理部分
@@ -42,3 +41,6 @@
   - after
      - red-green![图](out/5/color.jpg)
      - square![图](out/5/square.jpg)
+
+### note
+- [用python代码移动文件](note.py)

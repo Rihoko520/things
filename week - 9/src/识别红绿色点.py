@@ -1,7 +1,8 @@
 import cv2
 import numpy as np
 
-image_path = 'photo/1.jpg'
+#获取图片位置
+image_path = '1.jpg'
 
 image = cv2.imread(image_path)
 
@@ -32,8 +33,10 @@ for contour in contours_red:
     #z为x向右移z个单位（即是轮廓的宽）
     #k为y向下移k个单位（即是轮廓的高）
     x, y, z, k = cv2.boundingRect(contour)
+    # 在图像上绘制红色边界框
+    cv2.rectangle(image, (x, y), (x+z, y+k), (0, 0, 255), 2)
     # 在图像上标出绿色区域的中心坐标
-    cv2.putText(image, f'Red: ({x + z // 2}, {y + k // 2})', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+    cv2.putText(image, f'Red: ({x + z // 2}, {y + k // 2})', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
     print("红色点坐标:", x + z // 2, y + k // 2)
 # 遍历绿色点的轮廓
 for contour in contours_green:
@@ -42,6 +45,8 @@ for contour in contours_green:
     #z为x向右移z个单位（即是轮廓的宽）
     #k为y向下移k个单位（即是轮廓的高）
     x, y, z, k = cv2.boundingRect(contour)
+    # 在图像上绘制绿色边界框
+    cv2.rectangle(image, (x, y), (x+z, y+k), (0, 255, 0), 2)
     # 在图像上标出绿色区域的中心坐标
     cv2.putText(image, f'Green: ({x + z // 2}, {y + k // 2})', (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
     print("绿色点坐标:", x + z // 2, y + k // 2)
@@ -50,13 +55,6 @@ for contour in contours_green:
 cv2.namedWindow('红绿色点', cv2.WINDOW_NORMAL)
 cv2.imshow('红绿色点', image)
 
-##########################################################################################
-                                                                           #This
-#保存测试图片到相应区域                                                     #Is
-#（文件夹/文件名）                                                          #A
-save_path = 'finish/1/color.jpg'                                          #Saving
-cv2.imwrite(save_path, image)                                             #Spot!
-                                                                           #
-##########################################################################################
+
 cv2.waitKey(0)
 cv2.destroyAllWindows()
