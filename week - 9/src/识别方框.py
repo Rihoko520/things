@@ -62,13 +62,13 @@ if __name__ == "__main__":
     project = '1'
     
     image_path = f'{project}.jpg'
-    denoised_image = denoise(image_path)
-    enhanced_image = enhanced_image(denoised_image)
-    final_image = contours_detecto(enhanced_image)
+    denoised_ = denoise(image_path)
+    enhanced_ = enhanced_image(denoised_)
+    final_ = contours_detecto(enhanced_)
     
     # 显示检测出来的轮廓
-    cv2.namedWindow("final_image", cv2.WINDOW_NORMAL)
-    cv2.imshow("final_image", final_image)
+    cv2.namedWindow("square", cv2.WINDOW_NORMAL)
+    cv2.imshow("square", final_)
 
     cv2.waitKey(0)
     cv2.destroyAllWindows()
