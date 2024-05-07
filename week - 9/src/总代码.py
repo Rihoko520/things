@@ -162,8 +162,8 @@ if __name__ == "__main__":
     safe_1(image,name)
     safe_2(name,project)
     # 显示带有红色点和绿色点的图像
-    cv2.namedWindow('红绿色点', cv2.WINDOW_NORMAL)
-    cv2.imshow('红绿色点', image)
+    cv2.namedWindow('color', cv2.WINDOW_NORMAL)
+    cv2.imshow('color', image)
     # 显示检测出来的轮廓
     cv2.namedWindow("square", cv2.WINDOW_NORMAL)
     cv2.imshow("square", final_)

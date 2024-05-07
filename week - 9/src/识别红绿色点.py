@@ -60,8 +60,8 @@ if __name__ == "__main__":
     image_path = f'{project}.jpg'
     image = detectto(image_path)
 # 显示带有红色点和绿色点的图像
-    cv2.namedWindow('红绿色点', cv2.WINDOW_NORMAL)
-    cv2.imshow('红绿色点', image)
+    cv2.namedWindow('color', cv2.WINDOW_NORMAL)
+    cv2.imshow('color', image)
 
 
     cv2.waitKey(0)
