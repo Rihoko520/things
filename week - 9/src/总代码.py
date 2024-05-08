@@ -144,7 +144,7 @@ def detectto(image_path):
 if __name__ == "__main__":
     #获取图片位置
     #原图片名字(可通过直接该project的名字来选定图片直接进行处理)
-    project = '1'
+    project = '5'
     
     image_path = f'{project}.jpg'
     denoised_ = denoise(image_path)
@@ -161,6 +161,15 @@ if __name__ == "__main__":
     name ='color'
     safe_1(image,name)
     safe_2(name,project)
+
+    #合并图像
+    name ='combined'
+    Final_image = cv2.addWeighted(image, 0.6, final_, 0.6, 0)
+    safe_1(Final_image,name)
+    safe_2(name,project)
+    # 显示合并图像
+    cv2.namedWindow('combined', cv2.WINDOW_NORMAL)
+    cv2.imshow('combined', Final_image)    
     # 显示带有红色点和绿色点的图像
     cv2.namedWindow('color', cv2.WINDOW_NORMAL)
     cv2.imshow('color', image)
