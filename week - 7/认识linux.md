@@ -280,6 +280,10 @@ cat passwd
 
 ![alt text](photo/image-4.png)
 
-# 总结
+### hgfs挂载
+```bash
+sudo vmhgfs-fuse .host:/ /mnt/hgfs/ -o allow_other -o uid=1000
+```
+### 总结
 
 ![alt text](photo/image-5.png)
