@@ -1,8 +1,8 @@
 ### 代码部分
 
-- [识别方框的运行代码](src/识别方框.py)
+- [识别方框的运行代码](src/square_detect.py)
 
-- [识别红绿点的代码](src/识别红绿色点.py)
+- [识别红绿点的代码](src/red_green_detect.py)
 
 - [运行总代码](src/总代码.py)
 
