@@ -14,7 +14,7 @@ def enhanced_image(denoised_image):
     beta = 15  # 亮度增强参数
     enhanced_image = cv2.convertScaleAbs(denoised_image, alpha=alpha, beta=beta)
     return enhanced_image
-def contours_detecto(enhanced_image):
+def contours_detecto(enhanced_image,image_path):
     # 边缘检测
     edges = cv2.Canny(enhanced_image, 50, 150)
     # 查找轮廓
@@ -34,8 +34,7 @@ def contours_detecto(enhanced_image):
             # 如果逼近的轮廓是四边形，将其添加到列表中
             if len(approx) == 4:
                 quadrilaterals.append(approx)
-    image = cv2.imread(image_path)
-    marked_image = image.copy()
+    marked_image = image_path
 
     for quad in quadrilaterals:
         # 绘制轮廓
@@ -62,9 +61,10 @@ if __name__ == "__main__":
     project = '1'
     
     image_path = f'{project}.jpg'
+    image = cv2.imread(image_path)
     denoised_ = denoise(image_path)
     enhanced_ = enhanced_image(denoised_)
-    final_ = contours_detecto(enhanced_)
+    final_ = contours_detecto(enhanced_,image)
     
     # 显示检测出来的轮廓
     cv2.namedWindow("square", cv2.WINDOW_NORMAL)
