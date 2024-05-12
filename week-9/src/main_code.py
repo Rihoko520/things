@@ -77,7 +77,7 @@ def win_safe_(name,project):
     file_to_move = f'{name}.jpg'
 
     # 指定目标目录
-    destination_dir = f'D:\\Kaoru\\files\\Study\\python\\git\\week - 9\\out\\{project}'
+    destination_dir = f'D:\\Kaoru\\files\\Study\\python\\git\\week-9\\out\\{project}'
     # 此处路径只能用绝对路径，可以通过查看报错内容来查找你要的绝对路径位置，也可以直接复制目标目录的绝对路径过来，注意一定要双杠“\\”
 
     # 构建文件的完整路径
@@ -97,7 +97,7 @@ def linux_safe_(name,project):
     file_to_move = f'{name}.jpg'
 
     # 指定目标目录
-    destination_dir = f'/mnt/hgfs/D/Kaoru/files/Study/python/git/week - 9/out/{project}'
+    destination_dir = f'/mnt/hgfs/D/Kaoru/files/Study/python/git/week-9/out/{project}'
     # 此处路径只能用绝对路径，可以通过查看报错内容来查找你要的绝对路径位置，也可以直接复制目标目录的绝对路径过来，注意一定要双杠“\\”
 
     # 构建文件的完整路径
@@ -172,20 +172,20 @@ if __name__ == "__main__":
     #处理后的图像文件名
     name ='square'
     safe_1(final_,name)
-    linux_safe_(name,project)
+    win_safe_(name,project)
 
 
     image = detectto(image_path)
     #原图像文件名
     name ='color'
     safe_1(image,name)
-    linux_safe_(name,project)
+    win_safe_(name,project)
 
     #合并图像
     name ='combined'
     Final_image = cv2.addWeighted(image, 0.6, final_, 0.6, 0)
     safe_1(Final_image,name)
-    linux_safe_(name,project)
+    win_safe_(name,project)
     # 显示合并图像
     cv2.namedWindow('combined', cv2.WINDOW_NORMAL)
     cv2.imshow('combined', Final_image)    
