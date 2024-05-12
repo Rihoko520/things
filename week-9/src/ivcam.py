@@ -111,7 +111,7 @@ def detectto(image_path):
 import cv2
 
 # 替换IP_ADDRESS为iVCam所在设备的IP地址
-url = "198.18.0.1"
+url = "rtmp://198.18.0.1:19351"
 
 
 # 从iVCam设备捕获视频流
@@ -123,9 +123,10 @@ while True:
     if not ret:
         print("无法捕获视频流")
         break
-
+    _, image = cv2.imencode('.jpg', frame)
+    #im = detectto(image)
     # 在窗口中显示视频流
-    cv2.imshow('video', frame)
+    cv2.imshow('video', image)
     
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break

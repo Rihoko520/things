@@ -163,7 +163,7 @@ def detectto(image_path):
 if __name__ == "__main__":
     #获取图片位置
     #原图片名字(可通过直接该project的名字来选定图片直接进行处理)
-    project = '5'
+    project = '1'
     
     image_path = f'{project}.jpg'
     denoised_ = denoise(image_path)
