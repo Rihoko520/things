@@ -1,4 +1,4 @@
-# Install script for directory: /mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/example
+# Install script for directory: /mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/build
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/example/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

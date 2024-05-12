@@ -1,3 +1,0 @@
-/mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/example/CMakeFiles/DisplayImage.dir
-/mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/example/CMakeFiles/edit_cache.dir
-/mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/example/CMakeFiles/rebuild_cache.dir

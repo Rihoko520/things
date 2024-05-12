@@ -8,7 +8,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
-  "/mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/example/DisplayImage.cpp" "CMakeFiles/DisplayImage.dir/DisplayImage.cpp.o" "gcc" "CMakeFiles/DisplayImage.dir/DisplayImage.cpp.o.d"
+  "/mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/build/square.cpp" "CMakeFiles/square.dir/square.cpp.o" "gcc" "CMakeFiles/square.dir/square.cpp.o.d"
   )
 
 # Targets to which this target links.

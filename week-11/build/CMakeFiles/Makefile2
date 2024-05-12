@@ -54,16 +54,16 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/example
+CMAKE_SOURCE_DIR = /mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/build
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/example
+CMAKE_BINARY_DIR = /mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/build
 
 #=============================================================================
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/DisplayImage.dir/all
+all: CMakeFiles/square.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,34 +71,34 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/DisplayImage.dir/clean
+clean: CMakeFiles/square.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/DisplayImage.dir
+# Target rules for target CMakeFiles/square.dir
 
 # All Build rule for target.
-CMakeFiles/DisplayImage.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/example/CMakeFiles --progress-num=1,2 "Built target DisplayImage"
-.PHONY : CMakeFiles/DisplayImage.dir/all
+CMakeFiles/square.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/square.dir/build.make CMakeFiles/square.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/square.dir/build.make CMakeFiles/square.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/build/CMakeFiles --progress-num=1,2 "Built target square"
+.PHONY : CMakeFiles/square.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/DisplayImage.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/example/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/DisplayImage.dir/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/example/CMakeFiles 0
-.PHONY : CMakeFiles/DisplayImage.dir/rule
+CMakeFiles/square.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/build/CMakeFiles 2
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/square.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/build/CMakeFiles 0
+.PHONY : CMakeFiles/square.dir/rule
 
 # Convenience name for target.
-DisplayImage: CMakeFiles/DisplayImage.dir/rule
-.PHONY : DisplayImage
+square: CMakeFiles/square.dir/rule
+.PHONY : square
 
 # clean rule for target.
-CMakeFiles/DisplayImage.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/DisplayImage.dir/build.make CMakeFiles/DisplayImage.dir/clean
-.PHONY : CMakeFiles/DisplayImage.dir/clean
+CMakeFiles/square.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/square.dir/build.make CMakeFiles/square.dir/clean
+.PHONY : CMakeFiles/square.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.
