@@ -63,7 +63,7 @@ CMAKE_BINARY_DIR = /mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/build
 # Directory level rules for the build root directory
 
 # The main recursive "all" target.
-all: CMakeFiles/red_green.dir/all
+all: CMakeFiles/main.dir/all
 .PHONY : all
 
 # The main recursive "preinstall" target.
@@ -71,34 +71,34 @@ preinstall:
 .PHONY : preinstall
 
 # The main recursive "clean" target.
-clean: CMakeFiles/red_green.dir/clean
+clean: CMakeFiles/main.dir/clean
 .PHONY : clean
 
 #=============================================================================
-# Target rules for target CMakeFiles/red_green.dir
+# Target rules for target CMakeFiles/main.dir
 
 # All Build rule for target.
-CMakeFiles/red_green.dir/all:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/red_green.dir/build.make CMakeFiles/red_green.dir/depend
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/red_green.dir/build.make CMakeFiles/red_green.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/build/CMakeFiles --progress-num=1,2 "Built target red_green"
-.PHONY : CMakeFiles/red_green.dir/all
+CMakeFiles/main.dir/all:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/depend
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/build/CMakeFiles --progress-num=1,2 "Built target main"
+.PHONY : CMakeFiles/main.dir/all
 
 # Build rule for subdir invocation for target.
-CMakeFiles/red_green.dir/rule: cmake_check_build_system
+CMakeFiles/main.dir/rule: cmake_check_build_system
 	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/build/CMakeFiles 2
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/red_green.dir/all
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/main.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/build/CMakeFiles 0
-.PHONY : CMakeFiles/red_green.dir/rule
+.PHONY : CMakeFiles/main.dir/rule
 
 # Convenience name for target.
-red_green: CMakeFiles/red_green.dir/rule
-.PHONY : red_green
+main: CMakeFiles/main.dir/rule
+.PHONY : main
 
 # clean rule for target.
-CMakeFiles/red_green.dir/clean:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/red_green.dir/build.make CMakeFiles/red_green.dir/clean
-.PHONY : CMakeFiles/red_green.dir/clean
+CMakeFiles/main.dir/clean:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/clean
+.PHONY : CMakeFiles/main.dir/clean
 
 #=============================================================================
 # Special targets to cleanup operation of make.

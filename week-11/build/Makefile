@@ -117,41 +117,41 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named red_green
+# Target rules for targets named main
 
 # Build rule for target.
-red_green: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 red_green
-.PHONY : red_green
+main: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 main
+.PHONY : main
 
 # fast build rule for target.
-red_green/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/red_green.dir/build.make CMakeFiles/red_green.dir/build
-.PHONY : red_green/fast
+main/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/build
+.PHONY : main/fast
 
-red_green.o: red_green.cpp.o
-.PHONY : red_green.o
+main.o: main.cpp.o
+.PHONY : main.o
 
 # target to build an object file
-red_green.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/red_green.dir/build.make CMakeFiles/red_green.dir/red_green.cpp.o
-.PHONY : red_green.cpp.o
+main.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cpp.o
+.PHONY : main.cpp.o
 
-red_green.i: red_green.cpp.i
-.PHONY : red_green.i
+main.i: main.cpp.i
+.PHONY : main.i
 
 # target to preprocess a source file
-red_green.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/red_green.dir/build.make CMakeFiles/red_green.dir/red_green.cpp.i
-.PHONY : red_green.cpp.i
+main.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cpp.i
+.PHONY : main.cpp.i
 
-red_green.s: red_green.cpp.s
-.PHONY : red_green.s
+main.s: main.cpp.s
+.PHONY : main.s
 
 # target to generate assembly for a file
-red_green.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/red_green.dir/build.make CMakeFiles/red_green.dir/red_green.cpp.s
-.PHONY : red_green.cpp.s
+main.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/main.dir/build.make CMakeFiles/main.dir/main.cpp.s
+.PHONY : main.cpp.s
 
 # Help Target
 help:
@@ -161,10 +161,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... red_green"
-	@echo "... red_green.o"
-	@echo "... red_green.i"
-	@echo "... red_green.s"
+	@echo "... main"
+	@echo "... main.o"
+	@echo "... main.i"
+	@echo "... main.s"
 .PHONY : help
 
 
