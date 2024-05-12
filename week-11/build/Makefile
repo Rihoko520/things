@@ -117,41 +117,41 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named square
+# Target rules for targets named red_green
 
 # Build rule for target.
-square: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 square
-.PHONY : square
+red_green: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 red_green
+.PHONY : red_green
 
 # fast build rule for target.
-square/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/square.dir/build.make CMakeFiles/square.dir/build
-.PHONY : square/fast
+red_green/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/red_green.dir/build.make CMakeFiles/red_green.dir/build
+.PHONY : red_green/fast
 
-square.o: square.cpp.o
-.PHONY : square.o
+red_green.o: red_green.cpp.o
+.PHONY : red_green.o
 
 # target to build an object file
-square.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/square.dir/build.make CMakeFiles/square.dir/square.cpp.o
-.PHONY : square.cpp.o
+red_green.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/red_green.dir/build.make CMakeFiles/red_green.dir/red_green.cpp.o
+.PHONY : red_green.cpp.o
 
-square.i: square.cpp.i
-.PHONY : square.i
+red_green.i: red_green.cpp.i
+.PHONY : red_green.i
 
 # target to preprocess a source file
-square.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/square.dir/build.make CMakeFiles/square.dir/square.cpp.i
-.PHONY : square.cpp.i
+red_green.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/red_green.dir/build.make CMakeFiles/red_green.dir/red_green.cpp.i
+.PHONY : red_green.cpp.i
 
-square.s: square.cpp.s
-.PHONY : square.s
+red_green.s: red_green.cpp.s
+.PHONY : red_green.s
 
 # target to generate assembly for a file
-square.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/square.dir/build.make CMakeFiles/square.dir/square.cpp.s
-.PHONY : square.cpp.s
+red_green.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/red_green.dir/build.make CMakeFiles/red_green.dir/red_green.cpp.s
+.PHONY : red_green.cpp.s
 
 # Help Target
 help:
@@ -161,10 +161,10 @@ help:
 	@echo "... depend"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
-	@echo "... square"
-	@echo "... square.o"
-	@echo "... square.i"
-	@echo "... square.s"
+	@echo "... red_green"
+	@echo "... red_green.o"
+	@echo "... red_green.i"
+	@echo "... red_green.s"
 .PHONY : help
 
 

@@ -3,18 +3,9 @@
 - **cmake**相当于一个软件，他会把你写的代码打包整合成一个大的程序，每次运行只需要点开那个集合的程序就可以运行自己的代码
 ### 使用方法
 #### 构建一个cmakelist.txt
-- 文件内容如下
-
-    ```bash
-    cmake_minimum_required(VERSION 2.8)
-    project( DisplayImage )
-    find_package( OpenCV REQUIRED )
-    include_directories( ${OpenCV_INCLUDE_DIRS} )
-    add_executable( DisplayImage DisplayImage.cpp )
-    target_link_libraries( DisplayImage ${OpenCV_LIBS} )
-    ```
-
+- [cmakelist](src/CMakeLists.txt)
 #### 写自己的cv主函数
+
 - 范例
     ```c++
     #include <opencv2/highgui.hpp>
@@ -36,20 +27,21 @@
   ```
 - 保存为*name.cpp*文件（name是任意名字）
 
-#### 构建cmake程序集合仓库（即存放你程序的文件夹）
-**文件夹要包含你的主函数和cmakelist文件
+#### 构建cmake程序打包仓库
+
+- 新建一个Bulid文件夹
 - 在该文件夹打开终端
-    - 构建工程
+    - 导入cmake数据
         ```bash
         cmake .
-        make
         ```
 
-#### 构建完成，现在就可以开始运行自己的代码了
-- 在文件夹打开终端输入运行的文件名字（名字为自己创建的main程序名字，cpp那个）
-    
+#### 构建完成Bulid后，现在就可以开始包装自己的主函数了
+- 将调好的  cmakelist.txt  和主函数一起放进build文件夹
+- 在终端输入make开始打包
     ```bash
-    ./name
+    make
     ```
-
+#### 打包完成后就可以直接点击打包好的程序来运行了
+（有个齿轮那个）
 - 也可以直接点开那个工程(齿轮那个文件)

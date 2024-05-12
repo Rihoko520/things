@@ -40,10 +40,7 @@ Mat detectContours(string image_path) {
 }
 
 int main() {
-    string project = "1";
-    string image_path = project + ".jpg";
-    
-    Mat image = detectContours(image_path);
+    Mat image = detectContours("image.jpg");
     
     namedWindow("color", WINDOW_NORMAL);
     imshow("color", image);
