@@ -440,10 +440,8 @@ def inv_trans_vertices(small_vertices, inv_M):
 
     return inv_trans_vertices_int
 
+
 #################################################################
-
-img = None
-
 if __name__ == "__main__":
     print("开始")
     

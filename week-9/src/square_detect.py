@@ -1,7 +1,7 @@
 import cv2
 import numpy as np
 
-
+#denoise太几把卡了别用
 def denoise(image_path):
     image = cv2.imread(image_path)
     # 消噪
@@ -61,16 +61,20 @@ def contours_detecto(enhanced_image,image_path):
             print("Error: m00为0，无法计算中心坐标")
     return marked_image
 
+def square(image_path):
+    img = cv2.imread(image_path)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # 转换为灰度图像
+    blur = cv2.GaussianBlur(gray, (1, 1), 0)  # 高斯滤波去噪
+    enhanced_ = enhanced_image(blur)
+    final_ = contours_detecto(enhanced_,img)
+    return final_
 
 if __name__ == "__main__":
     #获取图片位置
     project = '1'
     
     image_path = f'{project}.jpg'
-    image = cv2.imread(image_path)
-    denoised_ = denoise(image_path)
-    enhanced_ = enhanced_image(denoised_)
-    final_ = contours_detecto(enhanced_,image)
+    final_ = square(image_path)
     
     # 显示检测出来的轮廓
     cv2.namedWindow("square", cv2.WINDOW_NORMAL)
