@@ -10,7 +10,7 @@ def denoise(image_path):
 
 def enhanced_image(denoised_image):     
     # 图像增强和对比度增强
-    alpha = 1.5  # 对比度增强参数（默认为1.0）
+    alpha = 1.0  # 对比度增强参数（默认为1.0）
     beta = 15  # 亮度增强参数
     enhanced_image = cv2.convertScaleAbs(denoised_image, alpha=alpha, beta=beta)
     return enhanced_image
@@ -61,10 +61,19 @@ def contours_detecto(enhanced_image,image_path):
             print("Error: m00为0，无法计算中心坐标")
     return marked_image
 
+def resize(img):
+    target_width = 640
+    target_height = 480
+
+    # 调整图像大小
+    img = cv2.resize(img, (target_width, target_height))
+    return img
+
 def square(image_path):
     img = cv2.imread(image_path)
+
     gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # 转换为灰度图像
-    blur = cv2.GaussianBlur(gray, (1, 1), 0)  # 高斯滤波去噪
+    blur = cv2.GaussianBlur(gray, (9, 9), 0)  # 高斯滤波去噪
     enhanced_ = enhanced_image(blur)
     final_ = contours_detecto(enhanced_,img)
     return final_

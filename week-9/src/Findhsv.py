@@ -1,14 +1,11 @@
 import cv2  
 import numpy as np  
 
-def find(image):  
+def find():  
   
     # 初始化HSV范围  
     h_min, s_min, v_min = 0, 100, 100  
     h_max, s_max, v_max = 10, 255, 255  
-  
-    # 转换到HSV颜色空间  
-    hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)  
   
     # 创建窗口  
     cv2.namedWindow('Color Thresholding')  
@@ -20,8 +17,12 @@ def find(image):
     cv2.createTrackbar('H_max', 'Color Thresholding', h_max, 255, lambda x: None)  
     cv2.createTrackbar('S_max', 'Color Thresholding', s_max, 255, lambda x: None)  
     cv2.createTrackbar('V_max', 'Color Thresholding', v_max, 255, lambda x: None)  
-  
+
+    video_stream = cv2.VideoCapture(0)
     while True:  
+        ret, frame = video_stream.read()
+        # 转换到HSV颜色空间  
+        hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)  
         # 获取滑动条的值  
         h_min = cv2.getTrackbarPos('H_min', 'Color Thresholding')  
         s_min = cv2.getTrackbarPos('S_min', 'Color Thresholding')  
@@ -36,7 +37,7 @@ def find(image):
         mask_red = cv2.inRange(hsv, lower_color, upper_color)  
       
         # 创建一个结果图像来可视化掩模  
-        result = cv2.bitwise_and(image, image, mask=mask_red)  
+        result = cv2.bitwise_and(frame, frame, mask=mask_red)  
       
         # 显示结果图像  
         cv2.imshow('Color Thresholding', result)  
@@ -46,9 +47,7 @@ def find(image):
             break  
 
 if __name__ == "__main__":
-    project = '5'
-    image_path = f'{project}.jpg'
-    image = cv2.imread(image_path) 
-    find(image)   
+    
+    find()   
     # 销毁所有窗口  
     cv2.destroyAllWindows()

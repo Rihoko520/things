@@ -446,7 +446,7 @@ if __name__ == "__main__":
     print("开始")
     
     # 读取图像
-    img = cv2.imread("3.jpg")
+    img = cv2.imread("1.jpg")
     
     # 预处理图像，获取轮廓
     contours = preprocess_image(img)

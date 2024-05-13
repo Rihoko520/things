@@ -29,7 +29,8 @@ def adjustfindcolor():
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    video_stream = cv2.VideoCapture(0)
+    url='http://192.168.1.144:4747/video/'
+    video_stream = cv2.VideoCapture(url)
     while True:
         ret, frame = video_stream.read()
         
