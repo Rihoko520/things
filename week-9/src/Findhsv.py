@@ -17,8 +17,8 @@ def find():
     cv2.createTrackbar('H_max', 'Color Thresholding', h_max, 255, lambda x: None)  
     cv2.createTrackbar('S_max', 'Color Thresholding', s_max, 255, lambda x: None)  
     cv2.createTrackbar('V_max', 'Color Thresholding', v_max, 255, lambda x: None)  
-
-    video_stream = cv2.VideoCapture(0)
+    url='http://192.168.1.144:4747/video/'
+    video_stream = cv2.VideoCapture(url)
     while True:  
         ret, frame = video_stream.read()
         # 转换到HSV颜色空间  
