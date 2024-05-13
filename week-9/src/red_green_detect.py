@@ -9,10 +9,10 @@ def detectto(image_path):
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     
     # 定义红色和绿色的HSV范围
-    lower_red = np.array([152, 127, 25])  
-    upper_red = np.array([179, 193, 255])  
-    lower_green = np.array([48, 82, 39])  
-    upper_green = np.array([121, 247, 255]) 
+    lower_red = np.array([170, 167, 92])  
+    upper_red = np.array([176, 236, 162])  
+    lower_green = np.array([57, 129, 86])  
+    upper_green = np.array([83, 183, 193]) 
 
     # 根据颜色范围创建掩模
     mask_red = cv2.inRange(hsv, lower_red, upper_red)
