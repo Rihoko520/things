@@ -48,11 +48,17 @@ def contours_detecto(enhanced_image,image_path):
 
         # 计算中心点并标记坐标
         M = cv2.moments(quad)
-        cx = int(M['m10'] / M['m00'])
-        cy = int(M['m01'] / M['m00'])
-    cv2.circle(marked_image, (cx, cy), 5, (0, 255, 0), -1)
-    cv2.putText(marked_image, f"({cx}, {cy})", (cx, cy), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
-    print("中心点坐标:", cx, cy)
+        if M['m00'] != 0:
+            cx = int(M['m10'] / M['m00'])
+            cy = int(M['m01'] / M['m00'])
+        
+        # 在标记图像上绘制中心点
+            cv2.circle(marked_image, (cx, cy), 5, (0, 255, 0), -1)
+            cv2.putText(marked_image, f"({cx}, {cy})", (cx, cy), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 255), 2)
+        
+            print("中心点坐标:", cx, cy)
+        else:
+            print("Error: m00为0，无法计算中心坐标")
     return marked_image
 
 
