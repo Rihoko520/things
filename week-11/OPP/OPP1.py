@@ -17,7 +17,10 @@ class ATMAccount:
         return self.balance  # 返回当前余额
 
 # 初始化一个ATM账户
-account = ATMAccount()
+
+account = ATMAccount(100)
+
+print(account.check_balance())
 
 # 交互式操作
 while True:
