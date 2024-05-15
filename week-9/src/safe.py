@@ -17,7 +17,7 @@ def win_safe_(name,project):
     file_to_move = f'{name}.jpg'
 
     # 指定目标目录
-    destination_dir = f'D:\\Kaoru\\files\\Study\\python\\git\\week-9\\out\\{project}'
+    destination_dir = 'D:\\Kaoru\\files\\Study\\python\\git\\week-9\\out\\'
     # 此处路径只能用绝对路径，可以通过查看报错内容来查找你要的绝对路径位置，也可以直接复制目标目录的绝对路径过来，注意一定要双杠“\\”
 
     # 构建文件的完整路径
@@ -37,7 +37,7 @@ def linux_safe_(name,project):
     file_to_move = f'{name}.jpg'
 
     # 指定目标目录
-    destination_dir = f'/mnt/hgfs/D/Kaoru/files/Study/python/git/week-9/out/{project}'
+    destination_dir = '/mnt/hgfs/D/Kaoru/files/Study/python/git/week-9/out/'
     # 此处路径只能用绝对路径，可以通过查看报错内容来查找你要的绝对路径位置，也可以直接复制目标目录的绝对路径过来，注意一定要双杠“\\”
 
     # 构建文件的完整路径

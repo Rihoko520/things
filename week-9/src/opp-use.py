@@ -189,9 +189,12 @@ if __name__ == "__main__":
         save_path = 'frame.jpg'
         cv2.imwrite(save_path, frame) 
         save_path = cv2.imread(save_path)
+        save_path = color.resize(save_path)
         enhanced_image = square.enhanced_image(save_path)
         contours_detecto = square.contours_detecto(enhanced_image,save_path)
-        cv2.imshow('frame', contours_detecto)
+        colorto = color.detectto('frame.jpg')
+        Final_image = cv2.addWeighted(contours_detecto, 0.6, colorto, 0.6, 0)
+        cv2.imshow('frame', Final_image)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break    
     video_stream.release()

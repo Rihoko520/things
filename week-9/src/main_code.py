@@ -13,20 +13,9 @@ if __name__ == "__main__":
     denoised_ = denoise(image_path)
     enhanced_ = enhanced_image(denoised_)
     final_ = contours_detecto(enhanced_,image)
-    #处理后的图像文件名
-    name ='square'
-    safe_1(final_,name)
-    win_safe_(name,project)
-
-
-    image = detectto(image_path)
-    #原图像文件名
-    name ='color'
-    safe_1(image,name)
-    win_safe_(name,project)
 
     #合并图像
-    name ='combined'
+    name =f'{project}'
     Final_image = cv2.addWeighted(image, 0.6, final_, 0.6, 0)
     safe_1(Final_image,name)
     win_safe_(name,project)
