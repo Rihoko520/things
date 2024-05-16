@@ -450,5 +450,109 @@ int main()
 }
 ```
 
-#### C++函数调用与重载、内联
+### C++函数调用与重载、内联
+#### C++中函数调用的用法
+- 函数调用及传参
+```c++
+#include<iostream>
+#include<cstring>
+using namespace std;
+int Reverse(char a[],char b[])//字符串逆序
+{
+    int i=0,n;
+    n=strlen(a);
+    while(a[i]!='\0')
+    {
+        b[n-i-1]=a[i];
+        i++;
+    }
+    b[n]='\0';
+    return 0;
+}
+int main()
+{
+    char str1[100];
+    char str2[100];
+    cin>>str1;
+    Reverse(str1,str2);
+    cout<<str2<<endl;
+    return 0;
+}
+```
+in
+```
+44fgh
+```
+out
+```
+hgf44
+```
+
+#### 带默认形参值的函数
+- 允许在自定义函数的形参列表中，给形参一个默认的值，这样在调用的时候如果有实参，那么按照实参传递给形参的方法使用；若调用的时候没有指定对应的实参，则形参将使用默认值。
+```c++
+#include<iostream>
+using namespace std;
+int add(int a=3,int b=5)//初始化了参量值
+{
+    return a+b;
+}
+int main()
+{
+    cout<<add(10,20)<<endl;//将10和20分别给a和b
+    cout<<add(30)<<endl;//将30给a，b为默认的5
+    cout<<add()<<endl;//使用a、b的默认值3和5
+    return 0;
+}
+
+```
+out
+```
+30
+35
+8
+```
+
+#### C++中的函数重载
+- 对于同一个功能函数，可能处理的对象类型不同，则需要重新实现一遍这个函数，这样下去就显得代码更加繁多，C++为了解决这一问题，而支持函数重载来解决这个问题。
+```c++
+#include<iostream>
+using namespace std;
+int add(int a,int b)
+{
+    cout<<"(int ,int)\t";
+    return a+b;
+}
+double add(double a,double b)
+{
+    cout<<"(doble ,double)\t";
+    return a+b;
+}
+double add(double a,int b)
+{
+    cout<<"(double ,int)\t";
+    return a+b;
+}
+double add(int a,double b)
+{
+    cout<<"(int ,double)\t";
+    return a+b;
+}
+int main()
+{
+    cout<<add(2,3)<<endl;
+    cout<<add(2.9,15.3)<<endl;
+    cout<<add(10,9.9)<<endl;
+    cout<<add(11.5,5)<<endl;
+    return 0;
+}
+//函数重载即两个或以上的函数，函数名相同，但形参类型或个数不同，编译器根据调用方传入的参数的类型和个数，自动选择最适合的一个函数来进行绑定调用，自动实现选择。
+```
+
+#### C++函数模板
+
+
+
+
+
 
