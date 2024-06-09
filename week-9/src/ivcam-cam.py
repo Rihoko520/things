@@ -8,7 +8,7 @@ from typing import List
 
 if __name__ == "__main__":
     url='http://192.168.1.144:4747/video/'
-    video_stream = cv2.VideoCapture(url)
+    video_stream = cv2.VideoCapture(0)
     while True:
         ret, frame = video_stream.read()
         
