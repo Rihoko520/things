@@ -1,0 +1,7 @@
+[
+{
+  "directory": "/mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/build/build",
+  "command": "/usr/bin/g++ -isystem /usr/local/include/opencv4 -g -o CMakeFiles/text.dir/text.cpp.o -c /mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/build/text.cpp",
+  "file": "/mnt/hgfs/D/Kaoru/files/Study/python/git/week-11/build/text.cpp"
+}
+]
