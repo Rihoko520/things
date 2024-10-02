@@ -244,7 +244,6 @@ def int_(armor):
         aromor_int_rounded.append(tuple(new_outer_tuple))
     return aromor_int_rounded
 
-
 def find_armor(img):
     armors_dict = {}
     armors_data = []
