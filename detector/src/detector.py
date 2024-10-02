@@ -55,7 +55,6 @@ def put_text(img,color,rect):
     # Draw the text
     cv2.putText(img,f"({center_x}, {center_y})", org, font, fontScale, color, thickness)
 
-
 def adjust_rotated_rect(rect):
     c, (w, h), angle = rect
     if w > h:
@@ -187,8 +186,6 @@ def armortype(img_raw,rotated_rect):
     except Exception as e:
         print(f"处理旋转矩形ROI时发生错误: {e}")
         return -1
-
-
 
 def merge_rotated_rects(rotated_rects_list):
     merged_rects = []
