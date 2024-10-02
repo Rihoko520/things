@@ -126,8 +126,8 @@ def merge_rotated_rects(rotated_rects_list):
         area = merged_rect[1][0] * merged_rect[1][1] # Calculate area of the merged rectangle
 
         if area >= 2000 : # Check if area is above the threshold
-        #if width/height<=3.7 and width/height>=0.2:
-            merged_rects.append(merged_rect)
+            if width/height<=3 and width/height>=0 :
+                merged_rects.append(merged_rect)
 
     return merged_rects
 
@@ -231,7 +231,29 @@ def put_text(img,color,rect):
     # Draw the text
     cv2.putText(img,f"({center_x}, {center_y})", org, font, fontScale, color, thickness)
 
+def int_(armor):
+    aromor_int_rounded = []
+    for outer_tuple in armor:
+        new_outer_tuple = []
+        for inner_tuple_or_float in outer_tuple:
+            if isinstance(inner_tuple_or_float, tuple):
+                new_inner_tuple = tuple(int(round(x)) for x in inner_tuple_or_float)
+                new_outer_tuple.append(new_inner_tuple)
+            else:
+                new_outer_tuple.append(int(round(inner_tuple_or_float)))
+        aromor_int_rounded.append(tuple(new_outer_tuple))
+    return aromor_int_rounded
+
+
 def find_armor(img):
+    armors_dict = {}
+    armors_data = []
+    rotated_rects_raw = [] # 存储检测到的旋转矩形数据
+    rotated_rects = [] # 存储检测到的旋转矩形数据
+    armor_rects_raw = []
+    armor_rects = []
+    all_groups = []
+    color=(0,0,0)
     # Find contours
     img_raw=img_adjust(img)
     img_binary=binary(gray(img_raw))
@@ -239,13 +261,6 @@ def find_armor(img):
     
     min_area = 200  # 最小面积阈值 (像素)
 
-    rotated_rects_raw = [] # 存储检测到的旋转矩形数据
-    rotated_rects = [] # 存储检测到的旋转矩形数据
-    armor_rects = []
-    all_groups = []
-    armor_red = []
-    armor_blue = []
-    color=(0,0,0)
     for contour in contours:
         # 查找最小面积旋转矩形
         rect = cv2.minAreaRect(contour)
@@ -259,7 +274,7 @@ def find_armor(img):
 
     # 打印检测到的旋转矩形信息
     for i, rect in enumerate(rotated_rects_raw):
-        rect=adjust_rotated_rect(rect)#校正数据
+        rect = adjust_rotated_rect(rect)#校正数据
         center, (width, height), angle = rect
         rotated_rects.append(rect) # 将旋转矩形数据添加到列表中
 
@@ -273,8 +288,13 @@ def find_armor(img):
 
     all_groups = group_close_rotated_rects(rotated_rects)
 
-    armor_rects = merge_rotated_rects(all_groups)
-
+    armor_rects_raw = merge_rotated_rects(all_groups)
+    
+    for i, armor_rect_raw in enumerate(armor_rects_raw):
+        armor_rect_raw = adjust_rotated_rect(armor_rect_raw)#校正数据
+        armor_rects.append(armor_rect_raw) # 将旋转矩形数据添加到列表中
+        armor_rects=int_(armor_rects)
+        
     for i , armor_rect in enumerate(armor_rects):
         # Draw merged rectangle
         center, (width, height), angle = armor_rect
@@ -282,19 +302,22 @@ def find_armor(img):
         box = np.int0(box)
         color_result = armortype(img_raw, armor_rect)
         if color_result == 1:
-            armor_blue.append(armor_rect)
+            armors_data = [(f"{center[0]}",{"class_id": 1, "height": height, "center": [center[0], center[1]]})]
+            for key, value in armors_data:
+                armors_dict[key] = value
             color=(255, 0, 0)
-            put_text(img,color,rect)
             cv2.drawContours(img, [box], 0, color, 3) 
-        elif color_result == 0:
-            armor_red.append(armor_rect)
-            color=(0, 0, 255)
             put_text(img,color,armor_rect)
+
+        elif color_result == 0:
+            armors_data = [(f"{center[0]}",{"class_id": 7, "height": height, "center": [center[0], center[1]]})]
+            for key, value in armors_data:
+                armors_dict[key] = value
+            color=(0, 0, 255)
             cv2.drawContours(img, [box], 0, color, 3) 
-    for i,red in enumerate(armor_red):
-        print(f"Red Armor Center: {i+1}:{red}")
-    for i,blue in enumerate(armor_blue):    
-        print(f"Blue Armor Center:{i+1}:{blue}")
+            put_text(img,color,armor_rect)
+
+    print(armors_dict)
     cv2.imshow("armor", img) # 显示带有轮廓的图像
 
 def destroy():
