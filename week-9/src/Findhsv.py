@@ -20,7 +20,7 @@ def find():
     url='http://192.168.1.209:4747/video/'
     video_stream = cv2.VideoCapture(url)
     while True:  
-        ret, frame = video_stream.read()
+        ret, frame = video_stream.read(0)
         # 转换到HSV颜色空间  
         hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)  
         # 获取滑动条的值  

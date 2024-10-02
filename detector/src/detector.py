@@ -4,14 +4,14 @@ from skimage import exposure, img_as_float
 
 def raw():
 
-    img = cv2.imread('detector/combine.png')
+    img = cv2.imread('detector/1.jpg')
     
     if img is None:
         print("Error: Could not read the image.")
     else:
         print("Image loaded successfully.")
         resized_img = cv2.resize(img, (640, 480))
-        cv2.imshow('Image', resized_img)
+        #cv2.imshow('Image', resized_img)
     return resized_img
 
 def img_adjust(img):
@@ -19,15 +19,16 @@ def img_adjust(img):
     image = img_as_float(img)
 
     # Adjust gamma
-    gamma_corrected = exposure.adjust_gamma(image, gamma=17) #Example: Darkens the image
-    
+    gamma_corrected = exposure.adjust_gamma(image, gamma=15) #Example: Darkens the image
+    blur = cv2.GaussianBlur(gamma_corrected, (37, 21), 0)  # 高斯滤波去噪
+    cv2.imshow('Binarized Image', blur)
     # Convert the image to a supported data type
-    img = gamma_corrected
+    img = blur
     if img.dtype == np.float64:
         img = img.astype(np.float32) #Convert to float32 if necessary
         img = (img * 255).astype(np.uint8) #Scale and convert to uint8 if necessary
 
-    cv2.imshow("gamma_corrected", img)
+    #cv2.imshow("gamma_corrected", img)
     return img
 
 def gray(img):
@@ -35,13 +36,13 @@ def gray(img):
         print("Error: Could not read the image.")
     else:
         img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        cv2.imshow("Grayscale Image", img_gray)
+        #cv2.imshow("Grayscale Image", img_gray)
     return img_gray
 
 def binary(img):
     ret,thresh = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
     # 显示结果
-    cv2.imshow('Binarized Image', thresh)
+    #cv2.imshow('Binarized Image', thresh)
     return thresh
 
 def put_text(img,color,rect):
@@ -83,7 +84,7 @@ def is_close(rect1, rect2, angle_tol, height_tol, width_tol, cy_tol):
     return (angle_diff <= angle_tol and height_diff <= height_tol and
             width_diff <= width_tol and cy_diff <= cy_tol)
 
-def group_close_rotated_rects(rotated_rects, angle_tol=10, height_tol=10, width_tol=5, cy_tol=100):
+def group_close_rotated_rects(rotated_rects, angle_tol=10, height_tol=100, width_tol=50, cy_tol=100):
     """将距离较近的旋转矩形进行分组，可以找到多组匹配。
 
     参数：
@@ -146,24 +147,25 @@ def armortype(img_raw,rotated_rect):
         # 提取ROI区域 (现在是旋转矩形)
         x, y, w, h = cv2.boundingRect(points) # 获取最小外接矩形
         roi = masked_roi[y:y+h, x:x+w]
-
         # 以下代码与之前版本相同，只是使用了masked_roi
         hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
 
-        lower_red = np.array([0, 100, 100])
+        lower_red = np.array([0, 43, 46])
         upper_red = np.array([10, 255, 255])
-        lower_blue = np.array([100, 100, 100])
-        upper_blue = np.array([140, 255, 255])
+        lower_blue = np.array([100, 43, 46])
+        upper_blue = np.array([124, 255, 255])
         lower_black = np.array([0, 0, 0])
         upper_black = np.array([180, 255, 50])
 
         mask_red = cv2.inRange(hsv, lower_red, upper_red)
         mask_blue = cv2.inRange(hsv, lower_blue, upper_blue)
+  
         mask_black = cv2.inRange(hsv, lower_black, upper_black)
 
         red_pixels = cv2.countNonZero(mask_red)
         blue_pixels = cv2.countNonZero(mask_blue)
         black_pixels = cv2.countNonZero(mask_black)
+
         total_pixels = roi.shape[0] * roi.shape[1]
 
         if total_pixels == 0:
@@ -173,12 +175,12 @@ def armortype(img_raw,rotated_rect):
         if total_non_black <= 0:
             return -1
 
-        red_ratio = red_pixels / total_non_black if total_non_black > 0 else 0
-        blue_ratio = blue_pixels / total_non_black if total_non_black > 0 else 0
+        red_ratio = red_pixels / total_non_black if total_non_black > 0.5 else 0
+        blue_ratio = blue_pixels / total_non_black if total_non_black > 0.8 else 0
 
-        if red_ratio > blue_ratio and red_ratio > 0.5:
+        if red_ratio > blue_ratio and red_ratio > 0:
             return 0
-        elif blue_ratio > red_ratio and blue_ratio > 0.5:
+        elif blue_ratio > red_ratio and blue_ratio > 0.8:
             return 1
         else:
             return -1
@@ -204,19 +206,19 @@ def merge_rotated_rects(rotated_rects_list):
         merged_rect = cv2.minAreaRect(np.array(points))
         area = merged_rect[1][0] * merged_rect[1][1] # Calculate area of the merged rectangle
 
-        if area >= 5000: # Check if area is above the threshold
-            merged_rects.append(merged_rect)
+        if area >= 2000 and area <= 7000: # Check if area is above the threshold
+            if width/height<=3.7 and width/height>=0.3:
+                merged_rects.append(merged_rect)
 
     return merged_rects
 
-def find_armor():
+def find_armor(img):
     # Find contours
-    img=raw()
     img_raw=img_adjust(img)
     img_binary=binary(gray(img_raw))
     contours, hierarchy = cv2.findContours(img_binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
-    min_area = 100  # 最小面积阈值 (像素)
+    min_area = 200  # 最小面积阈值 (像素)
 
     rotated_rects_raw = [] # 存储检测到的旋转矩形数据
     rotated_rects = [] # 存储检测到的旋转矩形数据
@@ -233,7 +235,7 @@ def find_armor():
             box = cv2.boxPoints(rect) # 获取旋转矩形的四个角点
             box = np.int0(box) # 将坐标转换为整数
             #print(box)
-            #cv2.drawContours(img, [box], 0, color, 2) # 绘制旋转矩形轮廓
+            cv2.drawContours(img, [box], 0, color, 2) # 绘制旋转矩形轮廓
             rotated_rects_raw.append(rect) # 将旋转矩形数据添加到列表中
 
     # 打印检测到的旋转矩形信息
@@ -281,8 +283,7 @@ def destroy():
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-
-    find_armor()
-
+    img=raw()
+    find_armor(img)
     destroy()
 
