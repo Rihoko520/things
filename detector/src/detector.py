@@ -4,7 +4,7 @@ from skimage import exposure, img_as_float
 
 def raw():
 
-    img = cv2.imread('detector/1.jpg')
+    img = cv2.imread('detector/combine.png')
     
     if img is None:
         print("Error: Could not read the image.")
@@ -19,9 +19,9 @@ def img_adjust(img):
     image = img_as_float(img)
 
     # Adjust gamma
-    gamma_corrected = exposure.adjust_gamma(image, gamma=15) #Example: Darkens the image
-    blur = cv2.GaussianBlur(gamma_corrected, (37, 21), 0)  # 高斯滤波去噪
-    cv2.imshow('Binarized Image', blur)
+    gamma_corrected = exposure.adjust_gamma(image, gamma=30) #Example: Darkens the image
+    blur = cv2.GaussianBlur(gamma_corrected, (23, 31), 0)  # 高斯滤波去噪
+    #cv2.imshow('Binarized Image', blur)
     # Convert the image to a supported data type
     img = blur
     if img.dtype == np.float64:
@@ -45,17 +45,6 @@ def binary(img):
     #cv2.imshow('Binarized Image', thresh)
     return thresh
 
-def put_text(img,color,rect):
-    center_x = int(rect[0][0])
-    center_y = int(rect[0][1])
-    org = (center_x, center_y)  # Bottom-left corner coordinates
-    font = cv2.FONT_HERSHEY_SIMPLEX
-    fontScale = 1
-    thickness = 2
-
-    # Draw the text
-    cv2.putText(img,f"({center_x}, {center_y})", org, font, fontScale, color, thickness)
-
 def adjust_rotated_rect(rect):
     c, (w, h), angle = rect
     if w > h:
@@ -69,20 +58,6 @@ def adjust_rotated_rect(rect):
             angle -= 180 # Adjust to negative angle
     rect = c, (w, h), angle
     return rect # Ensure angle is within 0-360 degrees
-
-def is_close(rect1, rect2, angle_tol, height_tol, width_tol, cy_tol):
-    """检查两个旋转矩形是否足够接近。"""
-    (cx1, cy1), (w1, h1), angle1 = rect1
-    (cx2, cy2), (w2, h2), angle2 = rect2
-
-    angle_diff = abs(angle1 - angle2)
-    angle_diff = min(angle_diff, 360 - angle_diff)  # 考虑角度环绕
-    height_diff = abs(h1 - h2)
-    width_diff = abs(w1 - w2)
-    cy_diff = abs(cy1 - cy2)
-
-    return (angle_diff <= angle_tol and height_diff <= height_tol and
-            width_diff <= width_tol and cy_diff <= cy_tol)
 
 def group_close_rotated_rects(rotated_rects, angle_tol=10, height_tol=100, width_tol=50, cy_tol=100):
     """将距离较近的旋转矩形进行分组，可以找到多组匹配。
@@ -119,75 +94,19 @@ def group_close_rotated_rects(rotated_rects, angle_tol=10, height_tol=100, width
 
     return all_groups
 
-def armortype(img_raw,rotated_rect):
-    """
-    检测旋转矩形ROI区域的主要颜色,排除黑色。红色为0,蓝色为1。
+def is_close(rect1, rect2, angle_tol, height_tol, width_tol, cy_tol):
+    """检查两个旋转矩形是否足够接近。"""
+    (cx1, cy1), (w1, h1), angle1 = rect1
+    (cx2, cy2), (w2, h2), angle2 = rect2
 
-    参数：
-        frame: 输入图像帧。
-        rotated_rect: OpenCV RotatedRect 对象，表示旋转矩形。
+    angle_diff = abs(angle1 - angle2)
+    angle_diff = min(angle_diff, 360 - angle_diff)  # 考虑角度环绕
+    height_diff = abs(h1 - h2)
+    width_diff = abs(w1 - w2)
+    cy_diff = abs(cy1 - cy2)
 
-    返回：
-        0: 主要颜色为红色
-        1: 主要颜色为蓝色
-        -1: 主要颜色为其他颜色或ROI区域无效
-    """
-    try:
-        # 获取旋转矩形的四个顶点
-        points = cv2.boxPoints(rotated_rect)
-        points = np.int0(points) # 将坐标转换为整数
-
-        # 创建掩码
-        mask = np.zeros(img_raw.shape[:2], dtype=np.uint8)
-        cv2.fillConvexPoly(mask, points, 255) #填充旋转矩形区域
-
-        # 应用掩码到图像
-        masked_roi = cv2.bitwise_and(img_raw, img_raw, mask=mask)
-
-        # 提取ROI区域 (现在是旋转矩形)
-        x, y, w, h = cv2.boundingRect(points) # 获取最小外接矩形
-        roi = masked_roi[y:y+h, x:x+w]
-        # 以下代码与之前版本相同，只是使用了masked_roi
-        hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
-
-        lower_red = np.array([0, 43, 46])
-        upper_red = np.array([10, 255, 255])
-        lower_blue = np.array([100, 43, 46])
-        upper_blue = np.array([124, 255, 255])
-        lower_black = np.array([0, 0, 0])
-        upper_black = np.array([180, 255, 50])
-
-        mask_red = cv2.inRange(hsv, lower_red, upper_red)
-        mask_blue = cv2.inRange(hsv, lower_blue, upper_blue)
-  
-        mask_black = cv2.inRange(hsv, lower_black, upper_black)
-
-        red_pixels = cv2.countNonZero(mask_red)
-        blue_pixels = cv2.countNonZero(mask_blue)
-        black_pixels = cv2.countNonZero(mask_black)
-
-        total_pixels = roi.shape[0] * roi.shape[1]
-
-        if total_pixels == 0:
-            return -1
-
-        total_non_black = total_pixels - black_pixels
-        if total_non_black <= 0:
-            return -1
-
-        red_ratio = red_pixels / total_non_black if total_non_black > 0.5 else 0
-        blue_ratio = blue_pixels / total_non_black if total_non_black > 0.8 else 0
-
-        if red_ratio > blue_ratio and red_ratio > 0:
-            return 0
-        elif blue_ratio > red_ratio and blue_ratio > 0.8:
-            return 1
-        else:
-            return -1
-
-    except Exception as e:
-        print(f"处理旋转矩形ROI时发生错误: {e}")
-        return -1
+    return (angle_diff <= angle_tol and height_diff <= height_tol and
+            width_diff <= width_tol and cy_diff <= cy_tol)
 
 def merge_rotated_rects(rotated_rects_list):
     merged_rects = []
@@ -206,11 +125,111 @@ def merge_rotated_rects(rotated_rects_list):
         merged_rect = cv2.minAreaRect(np.array(points))
         area = merged_rect[1][0] * merged_rect[1][1] # Calculate area of the merged rectangle
 
-        if area >= 2000 and area <= 7000: # Check if area is above the threshold
-            if width/height<=3.7 and width/height>=0.3:
-                merged_rects.append(merged_rect)
+        if area >= 2000 : # Check if area is above the threshold
+        #if width/height<=3.7 and width/height>=0.2:
+            merged_rects.append(merged_rect)
 
     return merged_rects
+
+def armortype(img_raw, rotated_rect):
+    """
+    Detects the dominant color (red or blue) within a rotated rectangular ROI, excluding black.
+
+    Args:
+        img_raw: Input image frame (BGR).
+        rotated_rect: OpenCV RotatedRect object representing the rotated rectangle.
+
+    Returns:
+        0: Dominant color is red.
+        1: Dominant color is blue.
+        -1: Dominant color is neither red nor blue, or ROI is invalid.
+    """
+    try:
+        # Get rotated rectangle points and create a mask
+        points = np.int0(cv2.boxPoints(rotated_rect))
+        mask = np.zeros_like(img_raw[:,:,0], dtype=np.uint8) #More efficient mask creation
+        cv2.fillConvexPoly(mask, points, 255)
+
+        # Apply mask and get ROI
+        masked_roi = cv2.bitwise_and(img_raw, img_raw, mask=mask)
+        x, y, w, h = cv2.boundingRect(points)
+        roi = masked_roi[y:y+h, x:x+w]
+
+        # Convert to HSV and define color ranges (improved blue range)
+        hsv = cv2.cvtColor(roi, cv2.COLOR_BGR2HSV)
+
+        lower_red = np.array([0, 43, 46])
+        upper_red = np.array([10, 255, 255])
+        lower_red_upper = np.array([160, 100, 100])
+        upper_red_upper = np.array([180, 255, 255])
+
+        lower_blue = np.array([100, 43, 46]) # Widened range for better blue detection
+        upper_blue = np.array([124, 255, 255]) # Widened range for better blue detection
+
+        lower_black = np.array([0, 0, 0])
+        upper_black = np.array([180, 255, 50])
+
+        #Efficient mask creation using numpy
+        mask_red = cv2.inRange(hsv, lower_red, upper_red) | cv2.inRange(hsv, lower_red_upper, upper_red_upper)
+        mask_blue = cv2.inRange(hsv, lower_blue, upper_blue)
+        mask_black = cv2.inRange(hsv, lower_black, upper_black)
+
+        # Count non-zero pixels (more efficient)
+        red_pixels = np.count_nonzero(mask_red)
+        blue_pixels = np.count_nonzero(mask_blue)
+        black_pixels = np.count_nonzero(mask_black)
+        total_pixels = roi.size // 3 #Efficient total pixel calculation
+
+        #Handle edge cases efficiently
+        if total_pixels == 0:
+            return -1
+        total_non_black = total_pixels - black_pixels
+        if total_non_black <= 0: 
+            return -1
+
+        red_ratio = red_pixels / total_non_black
+        blue_ratio = blue_pixels / total_non_black
+
+        # Determine dominant color
+        if red_ratio > blue_ratio and red_ratio > 0.5:
+            return 0
+        elif blue_ratio > red_ratio and blue_ratio > 0.5:
+            return 1
+        else:
+            return -1
+
+    except Exception as e:
+        print(f"Error detecting armor: {e}")
+        return -1
+
+def invert_color_loop(rgb):
+    """使用循环反转 RGB 颜色元组。
+
+    参数：
+     rgb: 表示 RGB 颜色的元组 (例如，(255, 0, 0))。
+
+    返回：
+     表示反转后 RGB 颜色的元组。如果输入无效，则返回 None。
+
+    """
+    if not isinstance(rgb, tuple) or len(rgb) != 3:
+        return None
+    inverted = []
+    for c in rgb:
+        inverted.append(255 - c)
+    return tuple(inverted)
+
+def put_text(img,color,rect):
+    color=invert_color_loop(color)
+    center_x = int(rect[0][0])
+    center_y = int(rect[0][1])
+    org = (center_x, center_y)  # Bottom-left corner coordinates
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    fontScale = 1
+    thickness = 2
+
+    # Draw the text
+    cv2.putText(img,f"({center_x}, {center_y})", org, font, fontScale, color, thickness)
 
 def find_armor(img):
     # Find contours
