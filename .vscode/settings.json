@@ -1,5 +1,9 @@
 {
     "editor.codeActionsOnSave": {
         
-    }
+    },
+    "files.autoSave": "afterDelay",
+    "explorer.autoReveal": true,
+    "explorer.fileNesting.enabled": false,
+    "workbench.quickOpen.preserveInput": false
 }
