@@ -2,10 +2,7 @@ import cv2
 import numpy as np
 from skimage import exposure, img_as_float
 
-def raw():
-
-    img = cv2.imread('detector/4.png')
-    
+def raw(img):
     if img is None:
         print("Error: Could not read the image.")
     else:
@@ -14,12 +11,12 @@ def raw():
         #cv2.imshow('Image', resized_img)
     return resized_img
 
-def img_adjust(img):
+def img_adjust(img,gamma):
     # Load a sample image
     image = img_as_float(img)
 
     # Adjust gamma
-    gamma_corrected = exposure.adjust_gamma(image, gamma=0.7) #Example: Darkens the image
+    gamma_corrected = exposure.adjust_gamma(image, gamma) #Example: Darkens the image
     blur = cv2.GaussianBlur(gamma_corrected, (11, 11), 0)  # 高斯滤波去噪
     #cv2.imshow('Image', blur)
     # Convert the image to a supported data type
@@ -27,7 +24,6 @@ def img_adjust(img):
     if img.dtype == np.float64:
         img = img.astype(np.float32) #Convert to float32 if necessary
         img = (img * 255).astype(np.uint8) #Scale and convert to uint8 if necessary
-
     #cv2.imshow("gamma_corrected", img)
     return img
 
@@ -342,7 +338,7 @@ def find_light(color,img_binary):
         #print(f"  角度: {angle}")
         
     return filtered_rotated_rects
-def find_armor(val,img):
+def find_armor(img,val,gamma):
     armors_dict = {}
     armors_data = []
     rotated_rects = [] # 存储检测到的旋转矩形数据
@@ -351,7 +347,7 @@ def find_armor(val,img):
     all_groups = []
     color=(0,0,0)
 
-    img_raw = img_adjust(img)
+    img_raw = img_adjust(img,gamma)
     img_binary = binary(val,gray(img_raw))
     
     # Find contours
@@ -395,8 +391,10 @@ def destroy():
 
 
 if __name__ == "__main__":
-    img=raw()
-    val=132
-    find_armor(img)
+    image = cv2.imread('detector/4.png')
+    img=raw(image)
+    val=6
+    gamma=12
+    find_armor(img,val,gamma)
     destroy()
 
