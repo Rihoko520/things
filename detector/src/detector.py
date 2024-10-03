@@ -48,7 +48,7 @@ def img_processed(img, val, gamma):
 def find_light(color, img_binary,img):
     contours, _ = cv2.findContours(img_binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     rotated_rects = [adjust_rotated_rect(cv2.minAreaRect(contour)) 
-                     for contour in contours if cv2.contourArea(contour) > 100]
+                     for contour in contours if cv2.contourArea(contour) > 100]##筛选掉太小的轮廓
     
     filtered_rotated_rects = []
     for i, rect_a in enumerate(rotated_rects):
@@ -83,13 +83,15 @@ def armortype(img_raw, rotated_rect):
 
         lower_blue = np.array([100, 43, 46]) # Widened range for better blue detection
         upper_blue = np.array([124, 255, 255]) # Widened range for better blue detection
+        lower_blue_upper = np.array([24, 25, 255])
+        upper_blue_upper = np.array([150, 65, 255])
 
         lower_black = np.array([0, 0, 0])
         upper_black = np.array([180, 255, 50])
 
         #Efficient mask creation using numpy
         mask_red = cv2.inRange(hsv, lower_red, upper_red) | cv2.inRange(hsv, lower_red_upper, upper_red_upper)
-        mask_blue = cv2.inRange(hsv, lower_blue, upper_blue)
+        mask_blue = cv2.inRange(hsv, lower_blue, upper_blue) | cv2.inRange(hsv, lower_blue_upper, upper_blue_upper)
         mask_black = cv2.inRange(hsv, lower_black, upper_black)
 
         # Count non-zero pixels (more efficient)
@@ -119,7 +121,7 @@ def armortype(img_raw, rotated_rect):
     except Exception :
         print("no armor")
         return -1
-def track_armor(img, img_raw, rotated_rects, angle_tol=25, height_tol=100, width_tol=100, cy_tol=100):
+def track_armor(img, img_raw, rotated_rects, angle_tol=15, height_tol=100, width_tol=100, cy_tol=100):
     rects_copy = rotated_rects[:]
     all_groups = []
     
@@ -140,7 +142,7 @@ def track_armor(img, img_raw, rotated_rects, angle_tol=25, height_tol=100, width
         
         points = np.concatenate([cv2.boxPoints(rect) for rect in rect_group])
         merged_rect = cv2.minAreaRect(points)
-        if merged_rect[1][0] * merged_rect[1][1] >= 2000:
+        if merged_rect[1][0] * merged_rect[1][1] >= 2000:##面积大于200
             if 0 <= merged_rect[1][0] / merged_rect[1][1] <= 4:
                 armor_rects.append(adjust_rotated_rect(merged_rect))
     
@@ -167,7 +169,7 @@ def destroy():
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    img = cv2.imread('detector/combine.png')
+    img = cv2.imread('detector/2.jpg')
     detect_armor(img)
     destroy()
 
