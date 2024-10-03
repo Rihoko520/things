@@ -4,7 +4,7 @@ from skimage import exposure, img_as_float
 
 def raw():
 
-    img = cv2.imread('detector/combine.png')
+    img = cv2.imread('detector/4.png')
     
     if img is None:
         print("Error: Could not read the image.")
@@ -19,9 +19,9 @@ def img_adjust(img):
     image = img_as_float(img)
 
     # Adjust gamma
-    gamma_corrected = exposure.adjust_gamma(image, gamma=30) #Example: Darkens the image
-    blur = cv2.GaussianBlur(gamma_corrected, (23, 31), 0)  # 高斯滤波去噪
-    #cv2.imshow('Binarized Image', blur)
+    gamma_corrected = exposure.adjust_gamma(image, gamma=0.7) #Example: Darkens the image
+    blur = cv2.GaussianBlur(gamma_corrected, (11, 11), 0)  # 高斯滤波去噪
+    #cv2.imshow('Image', blur)
     # Convert the image to a supported data type
     img = blur
     if img.dtype == np.float64:
@@ -39,11 +39,14 @@ def gray(img):
         #cv2.imshow("Grayscale Image", img_gray)
     return img_gray
 
-def binary(img):
-    ret,thresh = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-    # 显示结果
-    #cv2.imshow('Binarized Image', thresh)
-    return thresh
+def binary(val,gray_image):
+    # 获取当前的阈值
+    threshold_value = val
+    # 应用二值化处理
+    _, binary_image = cv2.threshold(gray_image, threshold_value, 255, cv2.THRESH_BINARY)
+    # 显示二值化后的图像
+    #cv2.imshow('Binary Image', binary_image)
+    return binary_image
 
 def adjust_rotated_rect(rect):
     c, (w, h), angle = rect
@@ -59,7 +62,7 @@ def adjust_rotated_rect(rect):
     rect = c, (w, h), angle
     return rect # Ensure angle is within 0-360 degrees
 
-def group_close_rotated_rects(rotated_rects, angle_tol=10, height_tol=100, width_tol=50, cy_tol=100):
+def group_close_rotated_rects(rotated_rects, angle_tol=10, height_tol=100, width_tol=100, cy_tol=100):
     """将距离较近的旋转矩形进行分组，可以找到多组匹配。
 
     参数：
@@ -110,23 +113,26 @@ def is_close(rect1, rect2, angle_tol, height_tol, width_tol, cy_tol):
 
 def merge_rotated_rects(rotated_rects_list):
     merged_rects = []
+    
     for rect_group in rotated_rects_list:
         if not rect_group:
-            continue  # 跳过空子列表
-    
+            continue  # Skip empty sublists
+        
         points = []
         for rect in rect_group:
             center, (width, height), angle = rect
-            # 计算旋转矩形的四个角点坐标
+            # Calculate the four corner points of the rotated rectangle
             box = cv2.boxPoints(((center[0], center[1]), (width, height), angle))
             points.extend(box)
 
-        # 使用cv2.minAreaRect找到最小面积的旋转矩形
+        # Find the minimum area rotated rectangle that encompasses all points
         merged_rect = cv2.minAreaRect(np.array(points))
-        area = merged_rect[1][0] * merged_rect[1][1] # Calculate area of the merged rectangle
+        area = merged_rect[1][0] * merged_rect[1][1]  # Calculate area of the merged rectangle
 
-        if area >= 2000 : # Check if area is above the threshold
-            if width/height<=3 and width/height>=0 :
+        # Check if the area is above the threshold
+        if area >= 2000:
+            # Check the aspect ratio of the rectangle
+            if 0 <= width / height <= 3:
                 merged_rects.append(merged_rect)
 
     return merged_rects
@@ -199,7 +205,7 @@ def armortype(img_raw, rotated_rect):
             return -1
 
     except Exception as e:
-        print(f"Error detecting armor: {e}")
+        #print(f"Error detecting armor: {e}")
         return -1
 
 def invert_color_loop(rgb):
@@ -244,21 +250,61 @@ def int_(armor):
         aromor_int_rounded.append(tuple(new_outer_tuple))
     return aromor_int_rounded
 
-def find_armor(img):
-    armors_dict = {}
-    armors_data = []
+def do_polygons_intersect(a, b):
+    """使用分离轴定理检查两个多边形是否相交。"""
+    polygons = [a, b]
+    for polygon in polygons:
+        for i in range(len(polygon)):
+            # 获取边的两个端点
+            p1 = polygon[i]
+            p2 = polygon[(i + 1) % len(polygon)]
+            # 计算法向量
+            normal = (p2[1] - p1[1], p1[0] - p2[0])
+            
+            # 将两个多边形的点投影到法向量上
+            min_a, max_a = project_polygon(a, normal)
+            min_b, max_b = project_polygon(b, normal)
+            
+            # 检查是否有重叠
+            if max_a < min_b or max_b < min_a:
+                return False  # 没有相交
+    return True  # 找到相交
+
+def project_polygon(polygon, axis):
+    """将多边形投影到给定的轴上。"""
+    projections = [np.dot(point, axis) for point in polygon]
+    return min(projections), max(projections)
+
+def filter_non_overlapping_rects(rotated_rects):
+    """过滤掉重叠的旋转矩形。"""
+    non_overlapping_rects = []  # 存储不重叠的矩形
+    
+    for i, rect_a in enumerate(rotated_rects):
+        box_a = cv2.boxPoints(rect_a)  # 获取旋转矩形的四个角点
+        box_a = np.int0(box_a)  # 将坐标转换为整数
+        overlap_found = False  # 标记是否找到重叠
+        
+        for j, rect_b in enumerate(rotated_rects):
+            if i != j:  # 不与自身比较
+                box_b = cv2.boxPoints(rect_b)  # 获取另一个旋转矩形的四个角点
+                box_b = np.int0(box_b)  # 将坐标转换为整数
+                
+                if do_polygons_intersect(box_a, box_b):  # 检查是否相交
+                    overlap_found = True  # 找到重叠
+                    break
+        
+        if not overlap_found:  # 如果没有重叠
+            non_overlapping_rects.append(rect_a)  # 将不重叠的矩形添加到列表中
+    
+    return non_overlapping_rects  # 返回不重叠的矩形列表
+
+def find_light(color,img_binary):
     rotated_rects_raw = [] # 存储检测到的旋转矩形数据
     rotated_rects = [] # 存储检测到的旋转矩形数据
-    armor_rects_raw = []
-    armor_rects = []
-    all_groups = []
-    color=(0,0,0)
-    # Find contours
-    img_raw=img_adjust(img)
-    img_binary=binary(gray(img_raw))
+    filtered_rotated_rects = []
     contours, hierarchy = cv2.findContours(img_binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     
-    min_area = 200  # 最小面积阈值 (像素)
+    min_area = 100  # 最小面积阈值 (像素)
 
     for contour in contours:
         # 查找最小面积旋转矩形
@@ -268,7 +314,7 @@ def find_armor(img):
             box = cv2.boxPoints(rect) # 获取旋转矩形的四个角点
             box = np.int0(box) # 将坐标转换为整数
             #print(box)
-            cv2.drawContours(img, [box], 0, color, 2) # 绘制旋转矩形轮廓
+            #cv2.drawContours(img, [box], 0, color, 2) # 绘制旋转矩形轮廓
             rotated_rects_raw.append(rect) # 将旋转矩形数据添加到列表中
 
     # 打印检测到的旋转矩形信息
@@ -277,16 +323,40 @@ def find_armor(img):
         center, (width, height), angle = rect
         rotated_rects.append(rect) # 将旋转矩形数据添加到列表中
 
-    for i, rect in enumerate(rotated_rects):
-        center, (width, height), angle = rect
+    filtered_rotated_rects = filter_non_overlapping_rects(rotated_rects)
+    
+    for i , filtered_rotated_rect in enumerate(filtered_rotated_rects):
+    # Draw merged rectangle
+        (x,y), (width, height), angle = filtered_rotated_rect
+        box = cv2.boxPoints(((x, y), (width, height), angle))
+        box = np.int0(box)
+        cv2.drawContours(img, [box], 0, color, 3) 
+
+    
+    #for i, rect in enumerate(rotated_rects):
+        #center, (width, height), angle = rect
         #print(f"旋转矩形 {i+1}:")
         #print(f"  中心点: {center}")
         #print(f"  宽度: {width}")
         #print(f"  高度: {height}")
         #print(f"  角度: {angle}")
+        
+    return filtered_rotated_rects
+def find_armor(val,img):
+    armors_dict = {}
+    armors_data = []
+    rotated_rects = [] # 存储检测到的旋转矩形数据
+    armor_rects_raw = []
+    armor_rects = []
+    all_groups = []
+    color=(0,0,0)
 
+    img_raw = img_adjust(img)
+    img_binary = binary(val,gray(img_raw))
+    
+    # Find contours
+    rotated_rects = find_light(color,img_binary)
     all_groups = group_close_rotated_rects(rotated_rects)
-
     armor_rects_raw = merge_rotated_rects(all_groups)
     
     for i, armor_rect_raw in enumerate(armor_rects_raw):
@@ -326,6 +396,7 @@ def destroy():
 
 if __name__ == "__main__":
     img=raw()
+    val=132
     find_armor(img)
     destroy()
 
