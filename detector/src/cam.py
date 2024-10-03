@@ -1,5 +1,5 @@
 import cv2
-from detector import find_armor
+from detector import detect_armor
 
 url='http://192.168.3.195:4747/video/'
 video_stream = cv2.VideoCapture("1.mp4")
@@ -13,7 +13,7 @@ while True:
     cv2.imwrite(save_path,frame)
     # 读取图像
     img = cv2.imread('frame.jpg')
-    find_armor(frame)
+    detect_armor(img)
     print(f"fps={ret}")
     # 等待按键，如果按下'q'则退出循环  
     if cv2.waitKey(1) & 0xFF == ord('q'):  
