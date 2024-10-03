@@ -29,7 +29,7 @@ def apply_changes():
     cv2.imshow('Binary Image', binary_image)
 
 # 加载图像
-image = cv2.imread('detector/1.png')
+image = cv2.imread('detector/combine.png')
 
 if image is None:
     print("Error: Could not read the image.")

@@ -45,7 +45,7 @@ def img_processed(img, val, gamma):
     img_gray = cv2.cvtColor(img_float, cv2.COLOR_BGR2GRAY)
     _, binary_image = cv2.threshold(img_gray, val, 255, cv2.THRESH_BINARY)
     return binary_image, resized_img, img_float
-def find_light(color, img_binary):
+def find_light(color, img_binary,img):
     contours, _ = cv2.findContours(img_binary, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
     rotated_rects = [adjust_rotated_rect(cv2.minAreaRect(contour)) 
                      for contour in contours if cv2.contourArea(contour) > 100]
@@ -116,10 +116,10 @@ def armortype(img_raw, rotated_rect):
         else:
             return -1
 
-    except Exception as e:
-        #print(f"Error detecting armor: {e}")
+    except Exception :
+        print("no armor")
         return -1
-def track_armor(img, img_raw, rotated_rects, angle_tol=10, height_tol=100, width_tol=100, cy_tol=100):
+def track_armor(img, img_raw, rotated_rects, angle_tol=25, height_tol=100, width_tol=100, cy_tol=100):
     rects_copy = rotated_rects[:]
     all_groups = []
     
@@ -141,7 +141,7 @@ def track_armor(img, img_raw, rotated_rects, angle_tol=10, height_tol=100, width
         points = np.concatenate([cv2.boxPoints(rect) for rect in rect_group])
         merged_rect = cv2.minAreaRect(points)
         if merged_rect[1][0] * merged_rect[1][1] >= 2000:
-            if 0 <= merged_rect[1][0] / merged_rect[1][1] <= 3:
+            if 0 <= merged_rect[1][0] / merged_rect[1][1] <= 4:
                 armor_rects.append(adjust_rotated_rect(merged_rect))
     
     armors_dict = {}
@@ -156,9 +156,9 @@ def track_armor(img, img_raw, rotated_rects, angle_tol=10, height_tol=100, width
             cv2.drawContours(img, [box], 0, color, 3)
             put_text(img, color, armor_rect)
     return armors_dict
-def detect_armor(img, val=6, gamma=12, color=(0,0,0)):
+def detect_armor(img, val=23, gamma=20, color=(0,0,0)):
     img_binary, resized_img, img_blur = img_processed(img, val, gamma)
-    rotated_rects = find_light(color, img_binary)
+    rotated_rects = find_light(color, img_binary,resized_img)
     armors_dict = track_armor(resized_img, img_blur, rotated_rects)
     print(armors_dict)
     cv2.imshow("armor", resized_img)
@@ -167,7 +167,7 @@ def destroy():
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    img = cv2.imread('detector/.png')
+    img = cv2.imread('detector/combine.png')
     detect_armor(img)
     destroy()
 
