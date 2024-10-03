@@ -21,10 +21,8 @@ def update_gamma(val):
 def apply_changes():
     # 应用 gamma 校正
     gamma_corrected = exposure.adjust_gamma(image, gamma)
-    # 应用高斯模糊
-    blur = cv2.GaussianBlur(gamma_corrected, (11, 11), 0)
     # 转换为灰度图像
-    gray_image = cv2.cvtColor(blur, cv2.COLOR_BGR2GRAY)
+    gray_image = cv2.cvtColor(gamma_corrected, cv2.COLOR_BGR2GRAY)
     # 应用二值化处理
     _, binary_image = cv2.threshold(gray_image, threshold_value, 255, cv2.THRESH_BINARY)
     # 显示二值化后的图像

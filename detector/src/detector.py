@@ -2,48 +2,27 @@ import cv2
 import numpy as np
 from skimage import exposure, img_as_float
 
-def raw(img):
-    if img is None:
-        print("Error: Could not read the image.")
-    else:
-        print("Image loaded successfully.")
-        resized_img = cv2.resize(img, (640, 480))
-        #cv2.imshow('Image', resized_img)
-    return resized_img
+def img_processed(img, val, gamma):
+    print("Image loaded successfully.")
+    resized_img = cv2.resize(img, (640, 480))
 
-def img_adjust(img,gamma):
-    # Load a sample image
-    image = img_as_float(img)
+    # 伽马校正
+    image = img_as_float(resized_img)
+    gamma_corrected = exposure.adjust_gamma(image, gamma)
+    
+    # 转换为 uint8
+    img_float = gamma_corrected
+    if img_float.dtype == np.float64:
+        img_float = img_float.astype(np.float32)
+        img_float = (img_float * 255).astype(np.uint8)
 
-    # Adjust gamma
-    gamma_corrected = exposure.adjust_gamma(image, gamma) #Example: Darkens the image
-    blur = cv2.GaussianBlur(gamma_corrected, (11, 11), 0)  # 高斯滤波去噪
-    #cv2.imshow('Image', blur)
-    # Convert the image to a supported data type
-    img = blur
-    if img.dtype == np.float64:
-        img = img.astype(np.float32) #Convert to float32 if necessary
-        img = (img * 255).astype(np.uint8) #Scale and convert to uint8 if necessary
-    #cv2.imshow("gamma_corrected", img)
-    return img
+    # 转换为灰度
+    img_gray = cv2.cvtColor(img_float, cv2.COLOR_BGR2GRAY)
 
-def gray(img):
-    if img is None:
-        print("Error: Could not read the image.")
-    else:
-        img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        #cv2.imshow("Grayscale Image", img_gray)
-    return img_gray
-
-def binary(val,gray_image):
-    # 获取当前的阈值
-    threshold_value = val
     # 应用二值化处理
-    _, binary_image = cv2.threshold(gray_image, threshold_value, 255, cv2.THRESH_BINARY)
-    # 显示二值化后的图像
-    #cv2.imshow('Binary Image', binary_image)
-    return binary_image
-
+    _, binary_image = cv2.threshold(img_gray, val, 255, cv2.THRESH_BINARY)
+    
+    return binary_image,resized_img,img_float
 def adjust_rotated_rect(rect):
     c, (w, h), angle = rect
     if w > h:
@@ -205,15 +184,7 @@ def armortype(img_raw, rotated_rect):
         return -1
 
 def invert_color_loop(rgb):
-    """使用循环反转 RGB 颜色元组。
 
-    参数：
-     rgb: 表示 RGB 颜色的元组 (例如，(255, 0, 0))。
-
-    返回：
-     表示反转后 RGB 颜色的元组。如果输入无效，则返回 None。
-
-    """
     if not isinstance(rgb, tuple) or len(rgb) != 3:
         return None
     inverted = []
@@ -338,7 +309,7 @@ def find_light(color,img_binary):
         #print(f"  角度: {angle}")
         
     return filtered_rotated_rects
-def find_armor(img,val,gamma):
+def find_armor(img_binary,img,img_raw):
     armors_dict = {}
     armors_data = []
     rotated_rects = [] # 存储检测到的旋转矩形数据
@@ -347,8 +318,6 @@ def find_armor(img,val,gamma):
     all_groups = []
     color=(0,0,0)
 
-    img_raw = img_adjust(img,gamma)
-    img_binary = binary(val,gray(img_raw))
     
     # Find contours
     rotated_rects = find_light(color,img_binary)
@@ -391,10 +360,10 @@ def destroy():
 
 
 if __name__ == "__main__":
-    image = cv2.imread('detector/4.png')
-    img=raw(image)
+    img = cv2.imread('detector/4.png')
     val=6
     gamma=12
-    find_armor(img,val,gamma)
+    binary_image,resized_img,img_blur = img_processed(img, val, gamma)
+    find_armor(binary_image,resized_img,img_blur)
     destroy()
 
