@@ -13,7 +13,8 @@ while True:
     cv2.imwrite(save_path,frame)
     # 读取图像
     img = cv2.imread('frame.jpg')
-    detect_armor(img)
+    armors_dict = detect_armor(img)
+    print(armors_dict)
     print(f"fps={ret}")
     # 等待按键，如果按下'q'则退出循环  
     if cv2.waitKey(1) & 0xFF == ord('q'):  
